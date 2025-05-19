@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
 
+type Task = {
+    text: string;
+    completed: boolean;
+};
+
 function TodoList() {
-    const [tasks, setTasks] = useState<string[]>([]);
+    const [tasks, setTasks] = useState<Task[]>([]);
     const [input, setInput] = useState<string>("");
 
     const addTask = () => {
         if (input.trim() !== "") {
-            setTasks([...tasks, input.trim()]);
+            const newTask : Task = { text: input.trim(), completed: false};
+            setTasks([...tasks, newTask]);
             setInput("");
         }
     };
@@ -36,7 +42,21 @@ function TodoList() {
             <ul style={{ marginTop: '1rem' }}>
                 {tasks.map((task, index) => (
                     <li key={index}>
-                        {task}
+                        <input
+                            type="checkbox"
+                            checked={task.completed}
+                            onChange={() => {
+                                const updated = [...tasks];
+                                updated[index].completed = !updated[index].completed;
+                                setTasks(updated);
+                            }}
+                        />
+                        <span style={{
+                            marginLeft: '0.5rem',
+                            textDecoration: task.completed ? "line-through" : "none"
+                        }}>
+                            {task.text}
+                        </span>
                         <button onClick={() => removeTask(index)} style={{ marginLeft: '1rem' }}>Supprimer</button>
                     </li>
                 ))}
