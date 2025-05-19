@@ -15,6 +15,10 @@ function TodoList() {
         setTasks(tasks.filter((_, i) => i !== index))
     };
 
+    const clearTasks = () => {
+        setTasks([]);
+    };
+
     return (
         <div style={{ marginTop: '2rem', padding: '1rem', border: '1px solid #ccc', borderRadius: 8 }}>
             <h2>Ma Todolist</h2>
@@ -26,6 +30,8 @@ function TodoList() {
                 onChange={(e) => setInput(e.target.value)}
             />
             <button onClick={addTask} style={{ marginLeft: '1rem' }}>Ajouter</button>
+
+            <button onClick={clearTasks} style={{marginLeft: '1rem' }}>Tout effacer</button>
 
             <ul style={{ marginTop: '1rem' }}>
                 {tasks.map((task, index) => (
