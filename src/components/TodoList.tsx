@@ -29,6 +29,7 @@ function TodoList() {
 
     const clearTasks = () => {
         setTasks([]);
+        setCounter(0);
     };
 
     const filteredTask = tasks.filter(task => {
