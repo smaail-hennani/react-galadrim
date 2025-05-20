@@ -8,6 +8,7 @@ type Task = {
 function TodoList() {
     const [tasks, setTasks] = useState<Task[]>([]);
     const [input, setInput] = useState<string>("");
+    const [filter, setFilter] = useState<"toutes" | "encours" | "terminees">("toutes");
 
     const addTask = () => {
         if (input.trim() !== "") {
@@ -25,6 +26,12 @@ function TodoList() {
         setTasks([]);
     };
 
+    const filteredTask = tasks.filter(task => {
+        if(filter === "encours") return !task.completed; 
+        if(filter === "terminees") return task.completed;
+        return true; //  toutes 
+    })
+
     return (
         <div style={{ marginTop: '2rem', padding: '1rem', border: '1px solid #ccc', borderRadius: 8 }}>
             <h2>Ma Todolist</h2>
@@ -39,8 +46,14 @@ function TodoList() {
 
             <button onClick={clearTasks} style={{marginLeft: '1rem' }}>Tout effacer</button>
 
+            <div style={{ marginTop: '1rem'}}>
+                <button onClick={() => setFilter("toutes")}>Toutes</button>
+                <button onClick={() => setFilter("encours")} style={{ marginLeft: '0.5rem' }}>En cours</button>
+                <button onClick={() => setFilter("terminees")} style={{ marginLeft: '0.5rem' }}>Terminés</button>
+            </div>
+
             <ul style={{ marginTop: '1rem' }}>
-                {tasks.map((task, index) => (
+                {filteredTask.map((task, index) => (
                     <li key={index}>
                         <input
                             type="checkbox"
