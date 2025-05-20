@@ -9,17 +9,22 @@ function TodoList() {
     const [tasks, setTasks] = useState<Task[]>([]);
     const [input, setInput] = useState<string>("");
     const [filter, setFilter] = useState<"toutes" | "encours" | "terminees">("toutes");
+    const [counter, setCounter] = useState<number>(0);
 
     const addTask = () => {
         if (input.trim() !== "") {
             const newTask : Task = { text: input.trim(), completed: false};
             setTasks([...tasks, newTask]);
             setInput("");
+            setCounter((prevCounter) => prevCounter + 1);
         }
     };
 
     const removeTask = (index: number) => {
-        setTasks(tasks.filter((_, i) => i !== index))
+        setTasks(tasks.filter((_, i) => i !== index));
+        if(!tasks[index].completed) { 
+            setCounter((prevCounter) => prevCounter - 1);
+        }
     };
 
     const clearTasks = () => {
@@ -42,6 +47,9 @@ function TodoList() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
             />
+
+            <h2>Tâches restantes : </h2>
+            <p>{counter}</p>
             <button onClick={addTask} style={{ marginLeft: '1rem' }}>Ajouter</button>
 
             <button onClick={clearTasks} style={{marginLeft: '1rem' }}>Tout effacer</button>
@@ -62,6 +70,11 @@ function TodoList() {
                                 const updated = [...tasks];
                                 updated[index].completed = !updated[index].completed;
                                 setTasks(updated);
+                                if(!task.completed) { 
+                                    setCounter((prevCounter) => prevCounter + 1);
+                                } else {
+                                    setCounter((prevCounter) => prevCounter - 1);
+                                }
                             }}
                         />
                         <span style={{
